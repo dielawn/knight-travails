@@ -44,37 +44,47 @@ console.log(chessBoard.findIndex([4, 5])); // Output: 35
 console.log(chessBoard.findIndex([8, 8])); // Output: 63
 console.log(chessBoard.findIndex([9, 9])); // Output: 'nope'
 
-class Knight {
-    constructor() {
-        this.location = null
-        this.moves = [
-            [1, 2], [1, -2],
-            [2, 1], [2, -1],
-            [-1, 2], [-1, -2],
-            [-2, 1], [-2, -1]
-        ]
-    }
-    findNextMove() {
-        const location = this.location
-        const moves = this.moves
-        console.log(location)
-        console.log(this.moves)
-        const possibleMoves = []
-        console.log(location[0] + this.moves[0][0], location[1] + this.moves[0][1])
-        console.log(location[0] + this.moves[1][0], location[1] + this.moves[1][1])
-        for (let i = 0; i < moves.length; i++) {
-            let potentialMove = [location[0] + this.moves[i][0], location[1] + this.moves[i][1]]
-            if (chessBoard.isValid(potentialMove))
-            possibleMoves.push(potentialMove)
-        }
 
-        console.log(possibleMoves)
+
+class Knight {
+    constructor(startingLocation) {
+        this.location = startingLocation
+        this.moves = this.possibleNextMoves()
+    }
+    getStart() {
+        console.log(this.startingLocations[0])
+    }
+    possibleNextMoves(location = this.location) {
+  
+        const moves = [
+                [1, 2], [1, -2],
+                [2, 1], [2, -1],
+                [-1, 2], [-1, -2],
+                [-2, 1], [-2, -1]
+            ]
+        
+        const possibleMoves = []
+        for (let i = 0; i < moves.length; i++) {
+            let potentialMove = [location[0] + moves[i][0], location[1] + moves[i][1]]
+            if (chessBoard.isValid(potentialMove))
+            possibleMoves.push(potentialMove)        
+        }
+        return possibleMoves
     }
 }
 
-const leftKnight = new Knight()
-leftKnight.location = [1, 2]
-leftKnight.findNextMove()
+const knightStartsAt = [[1, 2], [1, 7], [8, 2], [8, 7]]
+const leftKnightBlk = new Knight(knightStartsAt[0])
+const rightKnightBlk = new Knight(knightStartsAt[1])
+const leftKnightWht = new Knight(knightStartsAt[2])
+const rightKnightWht = new Knight(knightStartsAt[3])
+
+
+
+
+
+
+
 
 class Graph {
 
