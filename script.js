@@ -51,9 +51,6 @@ class Knight {
         this.location = startingLocation
         this.moves = this.possibleNextMoves()
     }
-    getStart() {
-        console.log(this.startingLocations[0])
-    }
     possibleNextMoves(location = this.location) {
   
         const moves = [
@@ -62,7 +59,7 @@ class Knight {
                 [-1, 2], [-1, -2],
                 [-2, 1], [-2, -1]
             ]
-        
+            
         const possibleMoves = []
         for (let i = 0; i < moves.length; i++) {
             let potentialMove = [location[0] + moves[i][0], location[1] + moves[i][1]]
@@ -71,7 +68,36 @@ class Knight {
         }
         return possibleMoves
     }
+    createMovesTree(depth = 0, maxDepth = 3) {
+        if (depth >= maxDepth) return [];
+
+        const possibleMoves = this.possibleNextMoves();
+        const movesTree = [];
+
+        for (const move of possibleMoves) {
+            this.location = move; // Update the knight's location for each move
+            const subTree = this.createMovesTree(depth + 1, maxDepth); // Recursive call with the updated location
+            movesTree.push({ location: move, moves: subTree });
+        }
+
+        return movesTree;
+    }
 }
+//     createMovesTree(depth = 0, maxDepth = 3) {
+//         if (depth >= maxDepth) return []
+
+//         const possibleMoves = this.possibleNextMoves()
+//         const movesTree = []
+//         for (const move of possibleMoves) {
+            
+//             const subTree = this.createMovesTree(depth + 1, maxDepth)
+//             console.log(subTree)
+  
+//             movesTree.push({location: move, moves: subTree})
+//         }
+//         return movesTree
+//     }
+// }
 
 const knightStartsAt = [[1, 2], [1, 7], [8, 2], [8, 7]]
 const leftKnightBlk = new Knight(knightStartsAt[0])
@@ -79,6 +105,7 @@ const rightKnightBlk = new Knight(knightStartsAt[1])
 const leftKnightWht = new Knight(knightStartsAt[2])
 const rightKnightWht = new Knight(knightStartsAt[3])
 
+const movesTree = leftKnightWht.createMovesTree();
 
 
 
@@ -86,51 +113,53 @@ const rightKnightWht = new Knight(knightStartsAt[3])
 
 
 
-class Graph {
-
-    constructor(vertices) {
-        this.vertices = vertices
-        this.adjacencyList = new Map()
-    }
-    addVertex(vertex) {
-        this.adjacencyList.set(vertex, [])
-    }
-    addEdge(vertex, vertex2) {
-        this.adjacencyList.get(vertex).push(vertex2)
-        this.adjacencyList.get(vertex2).push(vertex)
-    }
-    printGraph() {
-        let getKeys = this.adjacencyList.keys()
-        for (let key of getKeys) {
-            let getValues = this.adjacencyList.get(key)
-            let conc = ''
-
-            for (let j of getValues) {
-                conc += j + " "
-            }
-            console.log(key + ' -> ' + conc)
-        }
-    }
-}
-
-const newGraph = new Graph(8)
-let vertices = ['a','b','c','d','e','f','g','h']
 
 
-for (let i = 0; i < vertices.length; i++) {
-    newGraph.addVertex(vertices[i])
-}
+// class Graph {
 
-newGraph.addEdge('a', 'b')
-newGraph.addEdge('a', 'd')
-newGraph.addEdge('a', 'e')
-newGraph.addEdge('b', 'c')
-newGraph.addEdge('d', 'e')
-newGraph.addEdge('e', 'f')
-newGraph.addEdge('e', 'c')
-newGraph.addEdge('c', 'f')
+//     constructor(vertices) {
+//         this.vertices = vertices
+//         this.adjacencyList = new Map()
+//     }
+//     addVertex(vertex) {
+//         this.adjacencyList.set(vertex, [])
+//     }
+//     addEdge(vertex, vertex2) {
+//         this.adjacencyList.get(vertex).push(vertex2)
+//         this.adjacencyList.get(vertex2).push(vertex)
+//     }
+//     printGraph() {
+//         let getKeys = this.adjacencyList.keys()
+//         for (let key of getKeys) {
+//             let getValues = this.adjacencyList.get(key)
+//             let conc = ''
 
-newGraph.printGraph()
+//             for (let j of getValues) {
+//                 conc += j + " "
+//             }
+//             console.log(key + ' -> ' + conc)
+//         }
+//     }
+// }
+
+// const newGraph = new Graph(8)
+// let vertices = ['a','b','c','d','e','f','g','h']
+
+
+// for (let i = 0; i < vertices.length; i++) {
+//     newGraph.addVertex(vertices[i])
+// }
+
+// newGraph.addEdge('a', 'b')
+// newGraph.addEdge('a', 'd')
+// newGraph.addEdge('a', 'e')
+// newGraph.addEdge('b', 'c')
+// newGraph.addEdge('d', 'e')
+// newGraph.addEdge('e', 'f')
+// newGraph.addEdge('e', 'c')
+// newGraph.addEdge('c', 'f')
+
+// newGraph.printGraph()
 
 // breadthFirstSearch(startingNode) {
 //     let visited = {}
