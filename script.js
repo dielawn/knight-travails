@@ -16,7 +16,7 @@ class ChessBoard {
                 squareId.push([this.xAxis[j], this.yAxis[i]])
             }
         }
-        console.log(squareId)
+        // console.log(squareId)
         return squareId
     }
     findIndex(target) {
@@ -39,10 +39,10 @@ class ChessBoard {
 const chessBoard = new ChessBoard()
 chessBoard.createBoard()
 
-console.log(chessBoard.findIndex([1, 1])); // Output: 0
-console.log(chessBoard.findIndex([4, 5])); // Output: 35
-console.log(chessBoard.findIndex([8, 8])); // Output: 63
-console.log(chessBoard.findIndex([9, 9])); // Output: 'nope'
+// console.log(chessBoard.findIndex([1, 1])); // Output: 0
+// console.log(chessBoard.findIndex([4, 5])); // Output: 35
+// console.log(chessBoard.findIndex([8, 8])); // Output: 63
+// console.log(chessBoard.findIndex([9, 9])); // Output: 'nope'
 
 
 
@@ -61,8 +61,8 @@ class Knight {
             ]
             
         const possibleMoves = []
-        for (let i = 0; i < moves.length; i++) {
-            let potentialMove = [location[0] + moves[i][0], location[1] + moves[i][1]]
+        for (const move of moves) {
+            let potentialMove = [location[0] + move[0], location[1] + move[1]]
             if (chessBoard.isValid(potentialMove))
             possibleMoves.push(potentialMove)     
              
@@ -120,6 +120,26 @@ class Knight {
         path.unshift(start)
         return path
     }
+    dfsShortestPath(currentLocation, target, visited = new Set()) {
+        if (currentLocation[0] === target[0] && currentLocation[1] === target[1]) {
+            console.log('Target Found')
+            return [currentLocation] 
+        }
+
+        visited.add(currentLocation.toString())
+        
+        const possibleMoves = this.possibleNextMoves(currentLocation)
+
+        for (const move of possibleMoves) {
+            if (!visited.has(move.toString())) {
+                const path = this.dfsShortestPath(move, target, visited)
+                if (path.length > 0) {
+                    return [currentLocation, ...path]
+                }
+            }
+        }
+        return []
+    }
 }
 
 
@@ -134,64 +154,8 @@ const movesTree = leftKnightWht.createMovesTree();
 let startLocation = [1, 5]
 let targetLocation = [8, 1]
 
-const shortestPath = leftKnightBlk.bfsShortestPath(startLocation, targetLocation)
-console.log("Shortest Path:", shortestPath) // Output: [ [1, 2], [2, 4], [4, 5], [6, 6], [8, 8] ]
+// leftKnightBlk.bfsShortestPath(startLocation, targetLocation)
+// leftKnightBlk.dfsShortestPath(startLocation, targetLocation)
 
 
 
-
-
-
-
-
-// class Graph {
-
-//     constructor(vertices) {
-//         this.vertices = vertices
-//         this.adjacencyList = new Map()
-//     }
-//     addVertex(vertex) {
-//         this.adjacencyList.set(vertex, [])
-//     }
-//     addEdge(vertex, vertex2) {
-//         this.adjacencyList.get(vertex).push(vertex2)
-//         this.adjacencyList.get(vertex2).push(vertex)
-//     }
-//     printGraph() {
-//         let getKeys = this.adjacencyList.keys()
-//         for (let key of getKeys) {
-//             let getValues = this.adjacencyList.get(key)
-//             let conc = ''
-
-//             for (let j of getValues) {
-//                 conc += j + " "
-//             }
-//             console.log(key + ' -> ' + conc)
-//         }
-//     }
-// }
-
-// const newGraph = new Graph(8)
-// let vertices = ['a','b','c','d','e','f','g','h']
-
-
-// for (let i = 0; i < vertices.length; i++) {
-//     newGraph.addVertex(vertices[i])
-// }
-
-// newGraph.addEdge('a', 'b')
-// newGraph.addEdge('a', 'd')
-// newGraph.addEdge('a', 'e')
-// newGraph.addEdge('b', 'c')
-// newGraph.addEdge('d', 'e')
-// newGraph.addEdge('e', 'f')
-// newGraph.addEdge('e', 'c')
-// newGraph.addEdge('c', 'f')
-
-// newGraph.printGraph()
-
-// breadthFirstSearch(startingNode) {
-//     let visited = {}
-//     let queue = new Queue()
-
-// }
