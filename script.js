@@ -69,45 +69,46 @@ class Knight {
         }
         return possibleMoves
     }
-    createMovesTree(depth = 0, maxDepth = 5) {
-        if (depth >= maxDepth) return [];
+    createMovesTree(depth = 0, maxDepth = 3) {
+        if (depth >= maxDepth) return []
 
-        const possibleMoves = this.possibleNextMoves();
-        const movesTree = [];
+        const possibleMoves = this.possibleNextMoves()
+        const movesTree = []
 
         for (const move of possibleMoves) {
-            this.location = move; // Update the knight's location for each move
-            console.log(move)
-            
-            const subTree = this.createMovesTree(depth + 1, maxDepth) // Recursive call with the updated location
+            const knightCopy = new Knight(move) // Create a new instance for each move
+            const subTree = knightCopy.createMovesTree(depth + 1, maxDepth) // Recursive call with the new instance
             movesTree.push({ location: move, moves: subTree })
-            
         }
 
-        return movesTree;
+        return movesTree
     }
     bfsShortestPath(start, target) {
         const queue = [start]
-        const visited = new Set([start])
+        const visited = new Set()
+        visited.add(start.toString()) 
         const parentMap = new Map()
-
+    
         while (queue.length > 0) {
             const currentLocation = queue.shift()
-
+    
             if (currentLocation[0] === target[0] && currentLocation[1] === target[1]) {
                 return this.constructShortestPath(parentMap, start, target)
             }
+            
             const possibleMoves = this.possibleNextMoves(currentLocation)
+            
             for (const move of possibleMoves) {
-                if (!visited.has(move)) {
+                const moveString = move.toString()
+                if (!visited.has(moveString)) {
                     queue.push(move)
-                    visited.add(move)
-                    parentMap.set(move.toString(), currentLocation)
+                    visited.add(moveString)
+                    parentMap.set(moveString, currentLocation)
                 }
             }
         }
-        return null //no path found
-    }
+        return null // No path found
+    }    
     constructShortestPath(parentMap, start, target) {
         const path = []
         let current = target.toString()
@@ -130,11 +131,12 @@ const rightKnightWht = new Knight(knightStartsAt[3])
 
 const movesTree = leftKnightWht.createMovesTree();
 
-const startLocation = [1, 2];
-const targetLocation = [8, 8];
+let startLocation = [1, 5]
+let targetLocation = [8, 1]
 
-const shortestPath = leftKnightBlk.bfsShortestPath(startLocation, targetLocation);
-console.log(shortestPath); // Output: [ [1, 2], [2, 4], [4, 5], [6, 6], [8, 8] ]
+const shortestPath = leftKnightBlk.bfsShortestPath(startLocation, targetLocation)
+console.log("Shortest Path:", shortestPath) // Output: [ [1, 2], [2, 4], [4, 5], [6, 6], [8, 8] ]
+
 
 
 
